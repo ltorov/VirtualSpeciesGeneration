@@ -1,4 +1,4 @@
-function WarpedSpace = BetaDeformations(X,NumLayers,n)
+function warpedSpace = BetaDeformations(X,NumLayers,n, plot)
 
     G = zeros(NumLayers, n);
     
@@ -22,10 +22,16 @@ function WarpedSpace = BetaDeformations(X,NumLayers,n)
         G(i,:) = betacdf(X(i,:),a(i),b(i));
     end
     
-    %%
-    hold on
-    for i =1:NumLayers
-        g = G(i,:);
-        plot(X(i,:),g)
+    warpedSpace = G;
+
+    if nargin < 4
+        plot = false
+    end
+    if plot == true
+        hold on
+        for i =1:NumLayers
+            g = G(i,:);
+            plot(X(i,:),g)
+        end
     end
 end
