@@ -1,11 +1,13 @@
-function deformations = BetaDeformations(X,NumLayers,n, plotting)
-    if nargin < 4
+function deformations = BetaDeformations(X,point,NumLayers,n, plotting)
+    if nargin < 5
         plotting = false;
     end
     c = 5;
+    boundlo = 0;
+    boundhi = 5;
     G = zeros(NumLayers, n);
-    a = c.*rand(NumLayers,1);
-    b = c.*rand(NumLayers,1);
+    a = boundlo+(boundhi+boundlo).*rand(NumLayers,1);
+    b = boundlo+(boundhi+boundlo).*rand(NumLayers,1);
     for i = 1:NumLayers
         if a(i,:)<1
             if b(i,:)>=1
@@ -14,12 +16,14 @@ function deformations = BetaDeformations(X,NumLayers,n, plotting)
         end
         if a(i,:)>=1
             if b(i,:)<1
-                b(i,:) = 1 +(c+1).*rand(1);
+                b(i,:) = boundlo+(boundhi+boundlo).*rand(1);
             end
         end
     end
+    newPoint = point;
     for i = 1:NumLayers
         G(i,:) = betacdf(X(i,:),a(i),b(i));
+        newPoint(i) = betacdf(point(i),a(i),b(i));
     end
     if plotting == true
         clf
