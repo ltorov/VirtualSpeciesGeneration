@@ -1,4 +1,4 @@
-function deformations = BetaDeformations(X,point,NumLayers,n, plotting)
+function [G, NewPoint] = BetaDeformations(X,point,NumLayers,n, plotting)
     if nargin < 5
         plotting = false;
     end
@@ -20,10 +20,10 @@ function deformations = BetaDeformations(X,point,NumLayers,n, plotting)
             end
         end
     end
-    newPoint = point;
+    NewPoint = point;
     for i = 1:NumLayers
         G(i,:) = betacdf(X(i,:),a(i),b(i));
-        newPoint(i) = betacdf(point(i),a(i),b(i));
+        NewPoint(i) = betacdf(point(i),a(i),b(i));
     end
     if plotting == true
         clf
@@ -34,5 +34,4 @@ function deformations = BetaDeformations(X,point,NumLayers,n, plotting)
             plot(Xsorted(i,:),g)
         end
     end
-    deformations = G;
 end

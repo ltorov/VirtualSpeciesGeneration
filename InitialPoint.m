@@ -44,7 +44,7 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, point, coeff)
     end
 
     if useBeta == true
-        NormalizedClimVar = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
+        [NormalizedClimVar, point] = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
         %point = BetaDeformations(point,NumLayers,1);
 
         for i = 1: Rows
