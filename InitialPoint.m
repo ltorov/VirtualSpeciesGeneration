@@ -1,4 +1,4 @@
-function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, point, coeff)
+function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, coeff)
 % InfoInitialPoint = InitialPoint(ReadInfo, point, coeff)
 % 
 % DESCRIPTION
@@ -17,44 +17,48 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, point, coeff)
 %       -SortNormDistance:
 %       -coeff:    
 %%
+    tic
+
     Rows = ReadInfo.Dimensions(1);
     NumLayers = ReadInfo.Dimensions(2);
     NormalizedClimVar = ReadInfo.NormalizedClimVar;
     Distance = zeros(1, Rows);
-
+    
     if nargin < 3
-        point = rand(NumLayers, 1);
-        %idx = rand(Rows,1)
-        %idx = randi([0,Rows],NumLayers,1)
-        %point = NormalizedClimVar(:,idx);
+        randomPoint = false;
     end
     if nargin < 4
+        if randomPoint == true
+            point = rand(NumLayers, 1);
+        else
+            idx = randi([0,Rows]);
+            point = NormalizedClimVar(:,idx);
+        end
+    end
+    if nargin < 5
         coeff = rand(NumLayers, 1);
     end
+    
     
     if useBeta == false
         coeff = coeff/sum(coeff);
         point = point.*coeff;
         NormalizedClimVar = NormalizedClimVar.*coeff; 
 
-    for i = 1: Rows
-            Distance(i) = norm(point - NormalizedClimVar(:, i))...
-                      * (2 - corr2(point, NormalizedClimVar(:, i)));
-    end
-    end
+        for i = 1: Rows
+                Distance(i) = norm(point - NormalizedClimVar(:, i))...
+                          * (2 - corr2(point, NormalizedClimVar(:, i)));
+        end
+    else
 
-    if useBeta == true
         [NormalizedClimVar, point] = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
-        %point = BetaDeformations(point,NumLayers,1);
-
         for i = 1: Rows
             Distance(i) = norm(point - NormalizedClimVar(:, i))...
                       * (2 - corr2(point, NormalizedClimVar(:, i)));
-    end
+        end
         
     end
     
-
     NormDistance = 1 - normalize(Distance, 2, 'range');
     [SortNormDistance, idx] = sort(NormDistance, 2, 'descend');
     
@@ -62,5 +66,7 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, point, coeff)
     InfoInitialPoint.idx = idx;
     InfoInitialPoint.SortNormDistance = SortNormDistance;
     %InfoInitialPoint.coeff = coeff;
+
+    toc
 
 end
