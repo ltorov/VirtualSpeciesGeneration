@@ -1,11 +1,27 @@
-function [G, NewPoint] = BetaDeformations(X,point,NumLayers,n, plotting)
+function Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,n, plotting)
+% [G, NewPoint] = BetaDeformations(X,point,NumLayers,n, plotting)
+% 
+% DESCRIPTION
+%   
+% 
+% REQUIRED INPUTS
+%   NormalizedClimVar:
+%   point:
+%   NumLayers:
+%   n:
+%   plotting:
+% 
+% OUTPUTS
+%   %Deformations: a structure containing
+%       -ClimVar:
+%       -NewPoint:
+%%
     if nargin < 5
         plotting = false;
     end
-    c = 5;
     boundlo = 0;
     boundhi = 5;
-    G = zeros(NumLayers, n);
+    ClimVar = zeros(NumLayers, n);
     a = boundlo+(boundhi+boundlo).*rand(NumLayers,1);
     b = boundlo+(boundhi+boundlo).*rand(NumLayers,1);
     for i = 1:NumLayers
@@ -22,16 +38,22 @@ function [G, NewPoint] = BetaDeformations(X,point,NumLayers,n, plotting)
     end
     NewPoint = point;
     for i = 1:NumLayers
-        G(i,:) = betacdf(X(i,:),a(i),b(i));
+        ClimVar(i,:) = betacdf(NormalizedClimVar(i,:),a(i),b(i));
         NewPoint(i) = betacdf(point(i),a(i),b(i));
     end
     if plotting == true
         clf
         hold on
         for i =1:NumLayers
-            g = G(i,:);
-            Xsorted = sort(X,2);
-            plot(Xsorted(i,:),g)
+            climvar = ClimVar(i,:);
+            SortedNormalizedClimVar = sort(NormalizedClimVar,2);
+            plot(SortedNormalizedClimVar(i,:),climvar)
         end
     end
+
+    % OUTPUT STORAGE    
+    Deformations.ClimVar = ClimVar;
+    Deformations.NewPoint = NewPoint;
+
+   
 end
