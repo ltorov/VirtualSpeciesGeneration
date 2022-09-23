@@ -27,7 +27,8 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, 
     NumLayers = ReadInfo.Dimensions(2);
     NormalizedClimVar = ReadInfo.NormalizedClimVar;
     Distance = zeros(1, Rows);
-
+    
+    % COMPLETE INPUT
     if nargin < 2
         useBeta = false;
     end
@@ -45,17 +46,18 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, 
     if nargin < 5
         coeff = rand(NumLayers, 1);
     end
-    
+    % Generate deformations using linear combinations (coefficient)
     if useBeta == false
         coeff = coeff/sum(coeff);
         point = point.*coeff;
         NormalizedClimVar = NormalizedClimVar.*coeff; 
+    % Generate Beta deformations
     else
         Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
         NormalizedClimVar = Deformations.ClimVar;
         point = Deformations.NewPoint;
     end
-
+    % Calculate distance from initial point to the rest of the pixels.
     for i = 1: Rows
         Distance(i) = norm(point - NormalizedClimVar(:, i))...
         * (2 - corr2(point, NormalizedClimVar(:, i)));
