@@ -1,4 +1,4 @@
-function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, coeff)
+function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, coeff)
 % InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, coeff)
 % 
 % DESCRIPTION
@@ -27,13 +27,13 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, 
     NumLayers = ReadInfo.Dimensions(2);
     NormalizedClimVar = ReadInfo.NormalizedClimVar;
     Distance = zeros(1, Rows);
-    
+
     % COMPLETE INPUT
     if nargin < 2
-        useBeta = false;
+        method = 'coeff';
     end
     if nargin < 3
-        randomPoint = false;
+        randomPoint = true;
     end
     if nargin < 4
         if randomPoint == true
@@ -47,21 +47,32 @@ function InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, 
         coeff = rand(NumLayers, 1);
     end
     % Generate deformations using linear combinations (coefficient)
-    if useBeta == false
+    if strcmp(method,'coeff')
         coeff = coeff/sum(coeff);
         point = point.*coeff;
         NormalizedClimVar = NormalizedClimVar.*coeff; 
+        for i = 1: Rows
+            Distance(i) = norm(point - NormalizedClimVar(:, i))...
+            * (2 - corr2(point, NormalizedClimVar(:, i)));
+        end
+    
+    end
     % Generate Beta deformations
-    else
+    if strcmp(method,'beta')
         Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
         NormalizedClimVar = Deformations.ClimVar;
         point = Deformations.NewPoint;
+        for i = 1: Rows
+            Distance(i) = norm(point - NormalizedClimVar(:, i))...
+            * (2 - corr2(point, NormalizedClimVar(:, i)));
+        end     
+    end
+    if strcmp(method,'harmonic')
+        H = HarmonicDeformations(NormalizedClimVar,NumLayers,2,false);
+        Distance = H.distances;
     end
     % Calculate distance from initial point to the rest of the pixels.
-    for i = 1: Rows
-        Distance(i) = norm(point - NormalizedClimVar(:, i))...
-        * (2 - corr2(point, NormalizedClimVar(:, i)));
-    end
+
 
     NormDistance = 1 - normalize(Distance, 2, 'range');
     [SortNormDistance, idx] = sort(NormDistance, 2, 'descend');
