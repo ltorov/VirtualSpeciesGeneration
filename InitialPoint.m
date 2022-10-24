@@ -55,6 +55,7 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
             Distance(i) = norm(point - NormalizedClimVar(:, i))...
             * (2 - corr2(point, NormalizedClimVar(:, i)));
         end
+        NormDistance = normalize(Distance, 2, 'range');
     
     end
     % Generate Beta deformations
@@ -66,15 +67,16 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
             Distance(i) = norm(point - NormalizedClimVar(:, i))...
             * (2 - corr2(point, NormalizedClimVar(:, i)));
         end     
+        NormDistance = normalize(Distance, 2, 'range');
     end
     if strcmp(method,'harmonic')
-        H = HarmonicDeformations(NormalizedClimVar,NumLayers,2,false);
-        Distance = H.distances;
+        H = HarmonicDeformations(NormalizedClimVar,NumLayers,2,true);
+        NormDistance = 1- H.distances;
     end
     % Calculate distance from initial point to the rest of the pixels.
 
 
-    NormDistance = 1 - normalize(Distance, 2, 'range');
+    NormDistance = 1 - NormDistance;
     [SortNormDistance, idx] = sort(NormDistance, 2, 'descend');
     
     % OUTPUT STORAGE    

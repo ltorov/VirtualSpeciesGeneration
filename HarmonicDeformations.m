@@ -22,10 +22,23 @@ end
 
 alpha = ((PCAb- min(PCAb))/(max(PCAb)-min(PCAb)))*2*pi;
 
-samples = [r ; alpha]';
+%samples = [r ; alpha]';
 
+
+Nsamples = 1e4;%número de puntos
+samples = rand(Nsamples,2) * diag([1,2*pi]);
 H = HarmonicFunction(samples, limdef, plotting);
+distances = H.distances;
 
-Deformations.distances = H.distances;
-%plot(r,alpha,'o')
+
+F = scatteredInterpolant(samples(:,1),samples(:,2),distances);
+Z = F(r,alpha);
+
+if plotting
+    scatter(r,alpha,[],Z,'filled')
+    colormap jet
+end
+
+Deformations.distances = Z;
+
 end

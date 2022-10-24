@@ -27,16 +27,15 @@ assume(vars1(2),'Real')
 
 syms t
 assume(t,'Real')
-figure(3)
-clf
-fsurf(symfun(gN1(1),vars1),symfun(gN1(2),vars1),symfun(gN1(3),vars1),[0 1 0 2*pi])
-hold on
-r = t*samples(1,1)+(1-t)*samples(2,1);
-theta = t*samples(1,2)+(1-t)*samples(2,2);
-gN=subs(gN1,{vars1(1),vars1(2)},{r,theta});
-vars2=symvar(gN);
-
 if plotting
+    figure(3)
+    clf
+    fsurf(symfun(gN1(1),vars1),symfun(gN1(2),vars1),symfun(gN1(3),vars1),[0 1 0 2*pi])
+    hold on
+    r = t*samples(1,1)+(1-t)*samples(2,1);
+    theta = t*samples(1,2)+(1-t)*samples(2,2);
+    gN=subs(gN1,{vars1(1),vars1(2)},{r,theta});
+    vars2=symvar(gN);
     fplot3(symfun(gN(1),vars2),symfun(gN(2),vars2),symfun(gN(3),vars2),[0 1],'--or','LineWidth',2,'MarkerFaceColor','auto')
 end
 
