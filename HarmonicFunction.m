@@ -23,63 +23,50 @@ gN1 = mapping(harm,ddefM);%Mapeo de deformación
 vars1 = symvar(gN1);%Variables del mapeo
 assume(vars1(1),'Real')
 assume(vars1(2),'Real')
-
-
 syms t
 assume(t,'Real')
 if plotting
-    figure(3)
+    figure(1)
     clf
     fsurf(symfun(gN1(1),vars1),symfun(gN1(2),vars1),symfun(gN1(3),vars1),[0 1 0 2*pi])
     hold on
     r = t*samples(1,1)+(1-t)*samples(2,1);
     theta = t*samples(1,2)+(1-t)*samples(2,2);
-    gN=subs(gN1,{vars1(1),vars1(2)},{r,theta});
-    vars2=symvar(gN);
+    gN = subs(gN1,{vars1(1),vars1(2)},{r,theta});
+    vars2 = symvar(gN);
     fplot3(symfun(gN(1),vars2),symfun(gN(2),vars2),symfun(gN(3),vars2),[0 1],'--or','LineWidth',2,'MarkerFaceColor','auto')
 end
 
+funr = simplify(diff(gN1,vars1(1)));
+funtheta = simplify(diff(gN1,vars1(2)));
+g11 = simplify(dot(funr,funr));
+g12 = simplify(dot(funr,funtheta));
+g22 = simplify(dot(funtheta,funtheta));
 
-funr=simplify(diff(gN1,vars1(1)));
-funtheta=simplify(diff(gN1,vars1(2)));
-g11=simplify(dot(funr,funr));
-g12=simplify(dot(funr,funtheta));
-g22=simplify(dot(funtheta,funtheta));
+r = @(t) t*samples(1,1)+(1-t)*samples(:,1);
+theta = @(t) t*samples(1,2)+(1-t)*samples(:,2);
+dr = samples(1,1)-samples(:,1);
+dtheta = samples(1,2)-samples(:,2);
+fg11 = symfun(g11,[vars1(1),vars1(2)]);
+fg11 = matlabFunction(fg11);
 
-r =@(t) t*samples(1,1)+(1-t)*samples(:,1);
-theta =@(t) t*samples(1,2)+(1-t)*samples(:,2);
-dr=samples(1,1)-samples(:,1);
-dtheta=samples(1,2)-samples(:,2);
-fg11=symfun(g11,[vars1(1),vars1(2)]);
-fg11=matlabFunction(fg11);
-
-fg12=symfun(g12,[vars1(1),vars1(2)]);
-fg12=matlabFunction(fg12);
-fg22=symfun(g22,[vars1(1),vars1(2)]);
-fg22=matlabFunction(fg22);
+fg12 = symfun(g12,[vars1(1),vars1(2)]);
+fg12 = matlabFunction(fg12);
+fg22 = symfun(g22,[vars1(1),vars1(2)]);
+fg22 = matlabFunction(fg22);
 
 prefun = @(t) sqrt(fg11(r(t),theta(t)).*(dr).^2 + 2*fg12(r(t),theta(t)).*dr.*dtheta + fg22(r(t),theta(t)).*(dtheta).^2);
-    
-
-
-
-distances=integral(prefun,0,1,'ArrayValued',true);
-
-
-distances=(distances-max(distances))/(min(distances)-max(distances));
+distances = integral(prefun,0,1,'ArrayValued',true);
+distances = (distances-max(distances))/(min(distances)-max(distances));
 
 if plotting
-    figure(4)
+    figure(1)
     clf
     scatter(samples(:,1),samples(:,2),[],distances,'filled')
     colormap jet
 end
 %OUTPUT STORAGE
 Harmonic.distances = distances;
-
-toc
-
-
 
 end
 

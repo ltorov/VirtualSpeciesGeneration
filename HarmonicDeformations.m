@@ -3,15 +3,15 @@ function Deformations = HarmonicDeformations(NormalizedClimVar,NumLayers,limdef,
 %   Detailed explanation goes here
 
 if nargin < 3
-    limdef =2;
+    limdef = 2;
 end
-if nargin <4
+if nargin < 4
     plotting = false;
 end
 
 
 PCAs = pca(NormalizedClimVar');
-ind = randi([0 NumLayers],1,2);
+ind = randi([1 NumLayers],1,2);
 PCAa = PCAs(ind(1),:)*NormalizedClimVar; PCAb = PCAs(ind(2),:)*NormalizedClimVar;
 boo = randi([0 1],1);
 if boo == 0
@@ -35,8 +35,10 @@ F = scatteredInterpolant(samples(:,1),samples(:,2),distances);
 Z = F(r,alpha);
 
 if plotting
+    figure(1)
     scatter(r,alpha,[],Z,'filled')
     colormap jet
+    savefig('ColoredPCA.fig')
 end
 
 Deformations.distances = Z;

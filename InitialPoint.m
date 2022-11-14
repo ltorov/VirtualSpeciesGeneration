@@ -1,5 +1,5 @@
-function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, coeff)
-% InfoInitialPoint = InitialPoint(ReadInfo, useBeta, randomPoint, point, coeff)
+function InfoInitialPoint = InitialPoint(ReadInfo, method, plotting,randomPoint, point, coeff, limdef)
+% InfoInitialPoint = InitialPoint(ReadInfo, method, plotting,randomPoint, point, coeff, limdef)
 % 
 % DESCRIPTION
 %
@@ -33,9 +33,12 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
         method = 'coeff';
     end
     if nargin < 3
-        randomPoint = true;
+        plotting = false;
     end
     if nargin < 4
+        randomPoint = true;
+    end
+    if nargin < 5
         if randomPoint == true
             point = rand(NumLayers, 1);
         else
@@ -43,8 +46,11 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
             point = NormalizedClimVar(:,idx);
         end
     end
-    if nargin < 5
+    if nargin < 6
         coeff = rand(NumLayers, 1);
+    end
+    if nargin < 7
+        limdef = 2;
     end
     % Generate deformations using linear combinations (coefficient)
     if strcmp(method,'coeff')
@@ -60,7 +66,7 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
     end
     % Generate Beta deformations
     if strcmp(method,'beta')
-        Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows);
+        Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,Rows,plotting);
         NormalizedClimVar = Deformations.ClimVar;
         point = Deformations.NewPoint;
         for i = 1: Rows
@@ -70,8 +76,8 @@ function InfoInitialPoint = InitialPoint(ReadInfo, method, randomPoint, point, c
         NormDistance = normalize(Distance, 2, 'range');
     end
     if strcmp(method,'harmonic')
-        H = HarmonicDeformations(NormalizedClimVar,NumLayers,2,true);
-        NormDistance = 1- H.distances;
+        H = HarmonicDeformations(NormalizedClimVar, NumLayers,limdef, plotting);
+        NormDistance = 1 - H.distances;
     end
     % Calculate distance from initial point to the rest of the pixels.
 
