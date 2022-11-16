@@ -35,7 +35,7 @@ F = scatteredInterpolant(samples(:,1),samples(:,2),distances);
 Z = F(r,alpha);
 
 if plotting
-    figure(1)
+    figure(3)
     scatter(r,alpha,[],Z,'filled')
     colormap jet
     savefig('ColoredPCA.fig')

@@ -44,8 +44,8 @@ if strcmp(method,'GiniIndex')
     for i = 1:dim
         p = mapdists(:,i);
         [f,x] = ecdf(p);
-        %Gini(i) = (sum(((x-f).^2))/100)/(sum(((x).^2))/100);
-        Gini(i) = (sum(((f).^2))/100)/(sum(((x).^2))/100);
+        Gini(i) = (sum(((x-f).^2))/100)/(sum(((x).^2))/100);
+        %Gini(i) = (sum(((f).^2))/100)/(sum(((x).^2))/100);
     end
 
     

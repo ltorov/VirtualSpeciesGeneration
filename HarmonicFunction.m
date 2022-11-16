@@ -27,14 +27,14 @@ syms t
 assume(t,'Real')
 if plotting
     figure(1)
-    clf
     fsurf(symfun(gN1(1),vars1),symfun(gN1(2),vars1),symfun(gN1(3),vars1),[0 1 0 2*pi])
-    hold on
+    savefig('Harmonic.fig')
+    %hold on
     r = t*samples(1,1)+(1-t)*samples(2,1);
     theta = t*samples(1,2)+(1-t)*samples(2,2);
     gN = subs(gN1,{vars1(1),vars1(2)},{r,theta});
     vars2 = symvar(gN);
-    fplot3(symfun(gN(1),vars2),symfun(gN(2),vars2),symfun(gN(3),vars2),[0 1],'--or','LineWidth',2,'MarkerFaceColor','auto')
+    %fplot3(symfun(gN(1),vars2),symfun(gN(2),vars2),symfun(gN(3),vars2),[0 1],'--or','LineWidth',2,'MarkerFaceColor','auto')
 end
 
 funr = simplify(diff(gN1,vars1(1)));
@@ -60,9 +60,9 @@ distances = integral(prefun,0,1,'ArrayValued',true);
 distances = (distances-max(distances))/(min(distances)-max(distances));
 
 if plotting
-    figure(1)
-    clf
+    figure(2)
     scatter(samples(:,1),samples(:,2),[],distances,'filled')
+    savefig('ColoredSpace.fig')
     colormap jet
 end
 %OUTPUT STORAGE

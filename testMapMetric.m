@@ -1,25 +1,28 @@
 clear;clc;close all
 %%
-layerfolder='../Tool_landscape/data/Colombia/';%route to folder with ambiental data
+%layerfolder='../Tool_landscape/data/Colombia/';%route to folder with ambiental data
+layerfolder ='../Tool_landscape/data/SouthAmerica2.5M/';%route to folder with ambiental data
+
 Dimensions = ReadLayers(layerfolder);
 %%
-k = 90;
-j = 90;
+k = 100;
+j = 1;
 method = 'harmonic';
 tic
 for i = j:k
     waitbar((i-j)/(k-j), 'Generating maps')
-    Info = InitialPoint(Dimensions, method, false, 'limdef', 3);
+    Info = InitialPoint(Dimensions, method, false, 'limdef', 5);
     %figure(i);
     Map = NicheGeneration(Dimensions, Info, 1, false);
     MapsH(i) = Map;
 end
+close(h)
 toc
 %%
 method = 'coeff';
 
-k = 90;
-j = 71;
+k = 100;
+j = 1;
 h = waitbar(0,'Generating maps');
 tic
 for i = j:k
@@ -34,8 +37,8 @@ toc
 %%
 method = 'beta';
 
-k = 90;
-j = 71;
+k = 100;
+j = 1;
 h = waitbar(0,'Generating maps');
 tic
 for i = j:k
