@@ -66,4 +66,23 @@ function Metric = MapMetric(NicheMap, ModelMap, show, R)
         clf
         plot(LengthNicheMap, VectorModelMap, 'LineWidth', 2)
         hold on
-        plot(LengthN
+        plot(LengthNicheMap, VectorNicheMap, 'LineWidth', 2)
+        legend('Estimated','Original','Location','best')
+        title(strcat(num2str(round(Metric*100,2)),'%'))
+        if ~isempty(R)
+            figure
+            subplot(1,2,1)
+            geoshow(NicheMap, R, 'DisplayType','surface');
+            axis off
+            title('Niche')
+            subplot(1,2,2)
+            geoshow(ModelMap, R, 'DisplayType','surface');
+            contourcmap('jet', 0 : 0.05 : 1, 'colorbar', 'on', 'location', 'vertical')
+            axis off
+            title('Model')
+        end
+    end
+
+    Metric = [Metric, metric2];
+
+end
