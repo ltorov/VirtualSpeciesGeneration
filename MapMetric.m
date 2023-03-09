@@ -60,6 +60,7 @@ function Metric = MapMetric(NicheMap, ModelMap, show, R)
     
     % Display figures if show is set to 1
     if show == 1   
+        % Plot niche and model maps
         figure
         LengthNicheMap = length(VectorNicheMap);
         LengthNicheMap = linspace(0, 1, LengthNicheMap); 
@@ -69,6 +70,8 @@ function Metric = MapMetric(NicheMap, ModelMap, show, R)
         plot(LengthNicheMap, VectorNicheMap, 'LineWidth', 2)
         legend('Estimated','Original','Location','best')
         title(strcat(num2str(round(Metric*100,2)),'%'))
+
+        % Plot niche and model maps on a map
         if ~isempty(R)
             figure
             subplot(1,2,1)
@@ -83,6 +86,7 @@ function Metric = MapMetric(NicheMap, ModelMap, show, R)
         end
     end
 
+    % Append metric2 to Metric vector
     Metric = [Metric, metric2];
 
 end
