@@ -1,21 +1,21 @@
-function Harmonic = HarmonicFunction(samples, limdef, plotting)
+function Harmonic = HarmonicFunction(samples, deformations_limit, plotting)
 
 % This function generates a harmonic function, maps it onto a surface, and
 % calculates distances from given samples to the surface. 
 
 % INPUTS:
-% - samples: a 2x2 matrix of [r,theta] values representing two points in 
+%   samples: a 2x2 matrix of [r,theta] values representing two points in 
 %            polar coordinates
-% - limdef: an integer representing the degree of harmonic functions to 
+%   deformations_limit: an integer representing the degree of harmonic functions to 
 %           create, default is 3
-% - plotting: a boolean to indicate whether or not to create plots, default is false
+%   plotting: a boolean to indicate whether or not to create plots, default is false
 
 % OUTPUTS:
-% - Harmonic.distances: an array of calculated distances
+%   Harmonic.distances: an array of calculated distances
 
 % If limdef is not specified, set it to 3
 if nargin < 2
-    limdef = 3;
+    deformations_limit = 3;
 end
 
 % If plotting is not specified, set it to false
@@ -24,18 +24,18 @@ if nargin<3
 end
 
 % Create harmonic functions up to degree 2
-harm = Dalfa(1:limdef);
+harm = Dalfa(1:deformations_limit);
 
 % Create cell array to store deformation matrices for each degree
-ddefM = cell(1,limdef);
-ddefM{1} = eye(3);
-for i = 2:limdef
+deformation_matrices = cell(1,deformations_limit);
+deformation_matrices{1} = eye(3);
+for i = 2:deformations_limit
     len = size(harm{i},2);
-    ddefM{i} = rand(3,len);
+    deformation_matrices{i} = rand(3,len);
 end
 
 % Map deformation
-gN1 = mapping(harm,ddefM);
+gN1 = mapping(harm,deformation_matrices);
 
 % Get variables used in the mapping
 vars1 = symvar(gN1);
