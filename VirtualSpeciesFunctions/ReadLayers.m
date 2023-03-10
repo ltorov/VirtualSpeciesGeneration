@@ -89,10 +89,9 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
     ClimVar = ClimVariables(:,~nanPositions);
     Dimension = size(ClimVar,2);
     Map(:) = mean(ClimVariables);
-
-    % OUTPUT STORAGE
+    
+    % Store the output in a structure.
     ReadInfo.Indicator = nanPositions;
-
     ReadInfo.Dimensions = [Dimension, NumLayers];
     ReadInfo.NormalizedClimVar = normalize(ClimVar, 2, 'range');
     ReadInfo.Map = Map;
