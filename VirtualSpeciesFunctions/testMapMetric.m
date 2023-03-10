@@ -53,11 +53,12 @@ toc
 %method = 'LorenzCurve','KolmogorovSmirnov','ShannonEntropy','Rank','kkplot'
 method = 'LorenzCurve';
 plotting = false;
-metH = metrica(MapsH, Dimensions, method, plotting);
+metH = NicheMetric(MapsH, Dimensions, method, plotting);
 %%
 Info.idx = metH.idx';
 Info.SortNormDistance = metH.SortedNormalizedIndex';
 
+NicheMetric
 
 MapH = NicheGeneration(Dimensions, Info, 1, true);
 
@@ -65,7 +66,7 @@ MapH = NicheGeneration(Dimensions, Info, 1, true);
 %method = 'LorenzCurve','KolmogorovSmirnov','ShannonEntropy','Rank','kkplot'
 method = 'KolmogorovSmirnov';
 plotting = false;
-metC = metrica(MapsC, Dimensions, method, plotting);
+metC = NicheMetric(MapsC, Dimensions, method, plotting);
 
 
 %%
@@ -80,7 +81,7 @@ MapC = NicheGeneration(Dimensions, Info, 1, true);
 %method = 'LorenzCurve','KolmogorovSmirnov','ShannonEntropy','Rank','kkplot'
 method = 'Rank';
 plotting = false;
-metB = metrica(MapsB, Dimensions, method, plotting);
+metB = NicheMetric(MapsB, Dimensions, method, plotting);
 
 
 %%
