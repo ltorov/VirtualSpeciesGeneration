@@ -116,7 +116,7 @@ function InitialPoint = InitialPoint(layers, method, plotting, random_point, poi
     
     % Sort the distances and store the indices
     [sorted_norm_distance, idx] = sort(norm_distance, 2, 'descend');
-    s
+    
     % Store output information
     InitialPoint.idx = idx;
     InitialPoint.sorted_norm_distance = sorted_norm_distance;
