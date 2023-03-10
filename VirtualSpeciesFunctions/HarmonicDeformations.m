@@ -1,22 +1,22 @@
 function Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limdef, plotting)
-% HarmonicDeformations - Generate harmonic deformations of a given data set.
+% Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limdef, plotting)
+%
+% DESCRIPTION: 
+%   This function generates harmonic deformations of a given climate variable data set.
+%   It randomly selects two principal component axes from the data set and uses them to
+%   calculate a radial distance and an angle value for each point in a grid. It then
+%   generates harmonic functions for these values and calculates the distance of each
+%   point in the grid from the center. Finally, it creates a scatter plot with distance
+%   values colored by their corresponding data values.
 % 
-% Inputs:
-%   NormalizedClimVar - normalized climate variable data
-%   NumLayers - number of layers
-%   limdef - limit of deformation (default value = 2)
-%   plotting - whether to generate a plot (default value = false)
+% INPUTS:
+%   NormalizedClimVar: normalized climate variable data.
+%   NumLayers: number of layers.
+%   limdef: limit of deformation (default value = 2).
+%   plotting: whether to generate a plot (default value = false).
 %
-% Outputs:
-%   Deformations - struct containing distance values for each deformation
-%
-% This function generates harmonic deformations of a given climate variable data set.
-% It randomly selects two principal component axes from the data set and uses them to
-% calculate a radial distance and an angle value for each point in a grid. It then
-% generates harmonic functions for these values and calculates the distance of each
-% point in the grid from the center. Finally, it creates a scatter plot with distance
-% values colored by their corresponding data values.
-%
+% OUTPUTS:
+%   Deformations: struct containing distance values for each deformation.
 
 % Set default values for limdef and plotting if they are not provided
 if nargin < 3
