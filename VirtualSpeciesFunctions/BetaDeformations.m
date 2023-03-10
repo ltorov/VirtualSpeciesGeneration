@@ -1,16 +1,17 @@
-function Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,n, plotting,boundlo,boundhi)
-% Deformations = BetaDeformations(NormalizedClimVar, point, NumLayers, n, plotting, boundlo, boundhi)
+function Deformations = BetaDeformations(normalized_climate_vars, point, layer_num, layer_len, plotting, boundlo, boundhi)
+% Deformations = BetaDeformations(normalized_climate_vars, point, layer_num, layer_len, plotting, boundlo, boundhi)
 % 
 % DESCRIPTION:
 %   Generates beta distributions and warps a given point according to those
 %   distributions.
 % 
 % REQUIRED INPUTS:
-%   NormalizedClimVar: A matrix of normalized layers, the rows are the number of
-%                      layers, and the columns are the map shaped as a vector.
-%   point: an array of [NumLayers,1] of a chosen initial point.
-%   NumLayers: an integer with the number of layers.
-%   n: an integer with the length of the layer.
+%   normalized_climate_vars: A matrix of normalized layers, the rows are
+%                            the number of layers, and the columns are the 
+%                            map shaped as a vector.
+%   point: an array of [layer_num,1] of a chosen initial point.
+%   layer_num: an integer with the number of layers.
+%   layer_len: an integer with the length of the layer.
 %
 % OPTIONAL INPUTS:
 %   plotting: boolean variable (true, false) to plot the beta functions.
@@ -34,12 +35,12 @@ function Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,n, pl
     end
 
     % Generate alpha and beta parameters for NumLayers beta distributions.
-    ClimVar = zeros(NumLayers, n);
-    a = boundlo + (boundhi + boundlo) .* rand(NumLayers, 1);
-    b = boundlo + (boundhi + boundlo) .* rand(NumLayers, 1);
+    ClimVar = zeros(layer_num, layer_len);
+    a = boundlo + (boundhi + boundlo) .* rand(layer_num, 1);
+    b = boundlo + (boundhi + boundlo) .* rand(layer_num, 1);
     
     % Ensure a and b values fall within acceptable ranges.
-    for i = 1:NumLayers
+    for i = 1:layer_num
         if a(i, :) < 1
             if b(i, :) >= 1
                 b(i, :) = rand(1);
@@ -55,8 +56,8 @@ function Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,n, pl
     % Warp the space and the initial point using the distributions
     % generated.
     NewPoint = point;
-    for i = 1:NumLayers
-        ClimVar(i,:) = betacdf(NormalizedClimVar(i,:),a(i),b(i));
+    for i = 1:layer_num
+        ClimVar(i,:) = betacdf(normalized_climate_vars(i,:),a(i),b(i));
         NewPoint(i) = betacdf(point(i),a(i),b(i));
     end
 
@@ -64,9 +65,9 @@ function Deformations = BetaDeformations(NormalizedClimVar,point,NumLayers,n, pl
     if plotting == true
         clf
         hold on
-        for i =1:NumLayers
+        for i =1:layer_num
             climvar = ClimVar(i,:);
-            SortedNormalizedClimVar = sort(NormalizedClimVar,2);
+            SortedNormalizedClimVar = sort(normalized_climate_vars,2);
             plot(SortedNormalizedClimVar(i,:),climvar)
         end
     end
