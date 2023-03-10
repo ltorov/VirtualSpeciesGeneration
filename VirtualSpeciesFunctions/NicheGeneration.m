@@ -1,4 +1,4 @@
-function MapInfo = NicheGeneration(Layers, InitialPoint, occupation, plotting)
+function Map = NicheGeneration(Layers, InitialPoint, occupation, plotting)
 % NicheGeneration generates a niche map for a virtual species based on
 % environmental variables.
 %
@@ -9,7 +9,7 @@ function MapInfo = NicheGeneration(Layers, InitialPoint, occupation, plotting)
 %   show: boolean variable (true, false) to show the resulting niche map.
 %
 % OUTPUTS:
-%   MapInfo: a structure with the following fields:
+%   Map: a structure with the following fields:
 %       - Map: a matrix representing the niche map.
 %       - SortNormDistance: a vector of sorted and normalized distances.
 %       - NormDistance: a vector of normalized distances.
@@ -21,8 +21,8 @@ function MapInfo = NicheGeneration(Layers, InitialPoint, occupation, plotting)
     indicator = Layers.Indicator;  % Indicator matrix
     dimension = Layers.Dimensions(1);  % Dimension of the map
     r = Layers.R;  % Geographic reference object
-    [Dim1, Dim2] = size(Layers.Map);  % Size of the map
-    Map = nan(Dim1, Dim2);  % Initialize the niche map
+    [dim1, dim2] = size(Layers.Map);  % Size of the map
+    map = nan(dim1, dim2);  % Initialize the niche map
 
     % Extract initial point information
     idx = InitialPoint.idx;  % Index of the initial point
@@ -39,19 +39,19 @@ function MapInfo = NicheGeneration(Layers, InitialPoint, occupation, plotting)
     
     % Assign the normalized distances to the niche map
     NormDistance(idx) = SortNormDistance;
-    Map(~indicator) = NormDistance;
+    map(~indicator) = NormDistance;
 
     % Plot niche map if show is true
     if plotting
         clf
-        geoshow(Map, r, 'DisplayType', 'surface');
+        geoshow(map, r, 'DisplayType', 'surface');
         contourcmap('jet', 0 : 0.05 : 1, 'colorbar', 'on', 'location', 'vertical')
     end
 
     % Save output in a structure
-    MapInfo.Map = Map;
-    MapInfo.SortNormDistance = SortNormDistance;
-    MapInfo.NormDistance = NormDistance;
+    Map.Map = map;
+    Map.SortNormDistance = SortNormDistance;
+    Map.NormDistance = NormDistance;
     
     % Stop timer
     toc      

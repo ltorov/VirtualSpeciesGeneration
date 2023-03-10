@@ -1,4 +1,4 @@
-function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, show, spName, replacement, uniqueness)
+function T = samplingVS(Layers, InitialPoint, MapInfo, samples, factor, show, spName, replacement, uniqueness)
 % T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, show,...
 %                spName, replacement, uniqueness)
 % 
@@ -30,18 +30,18 @@ function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, sh
     end
     
     Map = MapInfo.Map;
-    SortNormDistance = MapInfo.SortNormDistance;
+    sorted_norm_distance = MapInfo.SortNormDistance;
     NormDistance = MapInfo.NormDistance;
-    R = ReadInfo.R;
-    idx = InfoInitialPoint.idx;
-    Indicator = ReadInfo.Indicator;
+    R = Layers.R;
+    idx = InitialPoint.idx;
+    Indicator = Layers.Indicator;
 
 % Sampling the niche map
     switch factor >= 0
         %Positive alpha
         case true
-            limit = find(SortNormDistance, 1, 'last') + 1;
-            DistanceSampling = SortNormDistance( 1 : limit-1);
+            limit = find(sorted_norm_distance, 1, 'last') + 1;
+            DistanceSampling = sorted_norm_distance( 1 : limit-1);
             score = zeros(1, 5);
             breaks = [1 0.8 0.6 0.4 0.2 0];
 
@@ -91,15 +91,15 @@ function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, sh
         % Negative alpha    
         case false
             
-            DistanceSampling = 1:length(SortNormDistance);
+            DistanceSampling = 1:length(sorted_norm_distance);
             factor = abs(factor);
             
             if factor > 1
-                SortNormDistance = SortNormDistance.^factor;
+                sorted_norm_distance = sorted_norm_distance.^factor;
             end 
             
             sampled = randsample(DistanceSampling, round(samples), replacement,...
-                SortNormDistance/sum(SortNormDistance));
+                sorted_norm_distance/sum(sorted_norm_distance));
             
             
         otherwise
@@ -108,7 +108,7 @@ function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, sh
             return
     end
     
-    Map2 = nan(size(ReadInfo.Map));
+    Map2 = nan(size(Layers.Map));
     
     if ~uniqueness   
         Tsamples = length(sampled);
@@ -116,9 +116,9 @@ function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, sh
         sampledCol = sampledRow;
         
         for i = 1:Tsamples
-            SortNormDistance(:) = 0;
-            SortNormDistance(sampled(i)) = 1;
-            NormDistance(idx) = SortNormDistance;
+            sorted_norm_distance(:) = 0;
+            sorted_norm_distance(sampled(i)) = 1;
+            NormDistance(idx) = sorted_norm_distance;
             Map2(~Indicator) = NormDistance;
             [sampledRow(i) , sampledCol(i)] = find(Map2 == 1);
             Map2(~Indicator) = 0;
@@ -128,9 +128,9 @@ function T = samplingVS(ReadInfo, InfoInitialPoint, MapInfo, samples, factor, sh
         sampledCol = sampledCol';
         
     else
-        SortNormDistance(:) = 0;
-        SortNormDistance(sampled) = 1;
-        NormDistance(idx) = SortNormDistance;
+        sorted_norm_distance(:) = 0;
+        sorted_norm_distance(sampled) = 1;
+        NormDistance(idx) = sorted_norm_distance;
         Map2(~Indicator) = NormDistance;
         [sampledRow , sampledCol] = find(Map2 == 1);
     end
