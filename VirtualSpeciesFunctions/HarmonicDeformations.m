@@ -1,5 +1,5 @@
-function Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limdef, plotting)
-% Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limdef, plotting)
+function Deformations = HarmonicDeformations(norm_climate_vars, layer_num, deformations_limit, plotting)
+% Deformations = HarmonicDeformations(NormalizedClimVar, layer_num, limdef, plotting)
 %
 % DESCRIPTION: 
 %   This function generates harmonic deformations of a given climate variable data set.
@@ -10,9 +10,9 @@ function Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limde
 %   values colored by their corresponding data values.
 % 
 % INPUTS:
-%   NormalizedClimVar: normalized climate variable data.
-%   NumLayers: number of layers.
-%   limdef: limit of deformation (default value = 2).
+%   norm_climate_vars: normalized climate variable data.
+%   layer_num: number of layers.
+%   deformations_limit: limit of deformation (default value = 2).
 %   plotting: whether to generate a plot (default value = false).
 %
 % OUTPUTS:
@@ -20,37 +20,37 @@ function Deformations = HarmonicDeformations(NormalizedClimVar, NumLayers, limde
 
 % Set default values for limdef and plotting if they are not provided
 if nargin < 3
-    limdef = 2;
+    deformations_limit = 2;
 end
 if nargin < 4
     plotting = false;
 end
 
 % Calculate the principal component axes of the input data
-PCAs = pca(NormalizedClimVar');
+PCAs = pca(norm_climate_vars');
 
 % Randomly select two principal component axes
-ind = randi([1 NumLayers], 1, 2);
-PCAa = PCAs(ind(1), :) * NormalizedClimVar;
-PCAb = PCAs(ind(2), :) * NormalizedClimVar;
+ind = randi([1 layer_num], 1, 2);
+PCA_axis_a = PCAs(ind(1), :) * norm_climate_vars;
+PCA_axis_b = PCAs(ind(2), :) * norm_climate_vars;
 
 % Generate a random boolean value to determine whether to use min or max values for r
 boo = randi([0 1], 1);
 if boo == 0
-    r = (PCAa - min(PCAa)) / (max(PCAa) - min(PCAa));
+    r = (PCA_axis_a - min(PCA_axis_a)) / (max(PCA_axis_a) - min(PCA_axis_a));
 else
-    r = (PCAa - max(PCAa)) / (min(PCAa) - max(PCAa));
+    r = (PCA_axis_a - max(PCA_axis_a)) / (min(PCA_axis_a) - max(PCA_axis_a));
 end
 
 % Calculate the alpha angle value
-alpha = ((PCAb - min(PCAb)) / (max(PCAb) - min(PCAb))) * 2 * pi;
+alpha = ((PCA_axis_b - min(PCA_axis_b)) / (max(PCA_axis_b) - min(PCA_axis_b))) * 2 * pi;
 
-% Generate a grid of Nsamples points with random values for r and alpha
-Nsamples = 1e4;
-samples = rand(Nsamples, 2) * diag([1, 2 * pi]);
+% Generate a grid of sample_num points with random values for r and alpha
+sample_num = 1e4;
+samples = rand(sample_num, 2) * diag([1, 2 * pi]);
 
 % Generate harmonic functions for each point in the grid and calculate the distance from the center
-H = HarmonicFunction(samples, limdef, plotting);
+H = HarmonicFunction(samples, deformations_limit, plotting);
 distances = H.distances;
 
 % Create a scattered interpolant object and use it to calculate the distance for each point with the given r and alpha values
