@@ -100,7 +100,7 @@ if plotting
 end
 
 % Store the distances into a structure
-Harmonic.distances = distances;
+Harmonic.Distances = distances;
 
 end
 

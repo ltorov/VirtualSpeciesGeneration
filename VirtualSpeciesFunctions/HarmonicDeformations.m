@@ -66,5 +66,5 @@ if plotting
 end
 
 % Store the distance values in a struct and return it
-Deformations.distances = Z;
+Deformations.Distances = Z;
 end

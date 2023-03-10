@@ -1,11 +1,11 @@
-function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
-% ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
+function Layers = ReadLayers(layer_folder, parallel, nanvalue)
+% Layers = ReadLayers(layer_folder, parallel, nanvalue)
 %
 % DESCRIPTION:
 % 'ReadLayers' reads multiple environmental layers stored in '.asc' files.
 %
 % REQUIRED INPUTS:
-%   layerfolder: string with the path to the folder containing the layers.
+%   layer_folder: string with the path to the folder containing the layers.
 %
 % OPTIONAL INPUTS:
 %   parallel: boolean variable (true, false), perform the file reading in parallel,
@@ -13,7 +13,7 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
 %   nanvalue: the value to use as NaN (Not a Number) in the layers (default: -9999).
 %
 % OUTPUTS:
-%   ReadInfo: a structure containing:
+%   Layers: a structure containing:
 %       -Z: a 3d matrix with the layers information.
 %       -R: a matrix of the layers coordinates.
 %       -Map: a 2d matrix with the mean value of the layers.
@@ -44,10 +44,10 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
     end
 
     % Add folder to MATLAB path to read layers
-    addpath(layerfolder)
+    addpath(layer_folder)
 
     % Get list of layer files in folder
-    LayerDir = dir(layerfolder);
+    LayerDir = dir(layer_folder);
     layers = {LayerDir.name};
 
     % Keep only files that start with 'bio'
@@ -55,7 +55,7 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
     layers = layers(CompareFileLayers);
 
     % Read the first layer to get its map and coordinates
-    [Z,R] = readgeoraster(strcat(layerfolder, layers{1}),'CoordinateSystemType','geographic');
+    [Z,R] = readgeoraster(strcat(layer_folder, layers{1}),'CoordinateSystemType','geographic');
     N = length(layers);
 
     % Preallocate Z matrix to store all layers
@@ -71,7 +71,7 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
     end
 
     % Remove folder from MATLAB path
-    rmpath(layerfolder)
+    rmpath(layer_folder)
 
     % Compute mean map and remove NaNs from layers
     [Rows, Columns, NumLayers] = size(Z);
@@ -91,12 +91,12 @@ function ReadInfo = ReadLayers(layerfolder, parallel, nanvalue)
     Map(:) = mean(ClimVariables);
     
     % Store the output in a structure.
-    ReadInfo.Indicator = nanPositions;
-    ReadInfo.Dimensions = [Dimension, NumLayers];
-    ReadInfo.NormalizedClimVar = normalize(ClimVar, 2, 'range');
-    ReadInfo.Map = Map;
-    ReadInfo.Z = Z;
-    ReadInfo.R = R;
+    Layers.Indicator = nanPositions;
+    Layers.Dimensions = [Dimension, NumLayers];
+    Layers.NormalizedClimVar = normalize(ClimVar, 2, 'range');
+    Layers.Map = Map;
+    Layers.Z = Z;
+    Layers.R = R;
 
     % Stop timer
     toc
