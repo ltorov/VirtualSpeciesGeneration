@@ -23,8 +23,6 @@ if nargin<3
     plotting = false;
 end
 
-tic
-
 % Create harmonic functions up to degree 2
 harm = Dalfa(1:limdef);
 
