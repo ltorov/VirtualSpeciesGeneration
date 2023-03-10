@@ -19,14 +19,14 @@ function MapInfo = VirtualSpecies(ReadInfo, InfoInitialPoint, Occupation, show)
     %   MapInfo: A struct containing the updated version of
     %            InfoInitialPoint, as well as the generated map.
     
-    %% Read in clim variables
+    % Read in clim variables
     Indicator = ReadInfo.Indicator;
     Dimension = ReadInfo.Dimensions(1);
     R = ReadInfo.R;
     [Dim1, Dim2] = size(ReadInfo.Map);
     Map = nan(Dim1, Dim2);
     
-    %% Set up the virtual species distribution map
+    % Set up the virtual species distribution map
     NormDistance = InfoInitialPoint.NormDistance;
     idx = InfoInitialPoint.idx;
     SortNormDistance = InfoInitialPoint.SortNormDistance;
@@ -49,7 +49,7 @@ function MapInfo = VirtualSpecies(ReadInfo, InfoInitialPoint, Occupation, show)
         contourcmap('jet', 0 : 0.05 : 1, 'colorbar', 'on', 'location', 'vertical')
     end
     
-    %% Output struct
+    % Output struct
     MapInfo = InfoInitialPoint;
     MapInfo.Map = Map;
     MapInfo.SortNormDistance = SortNormDistance;
