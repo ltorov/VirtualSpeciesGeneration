@@ -1,4 +1,7 @@
 function MapInfo = VirtualSpecies(ReadInfo, InfoInitialPoint, Occupation, show)
+    % MapInfo = VirtualSpecies(ReadInfo, InfoInitialPoint, Occupation, show)
+    %
+    % DESCRIPTION:
     % VirtualSpecies generates a virtual species distribution map.
     % The function reads the climate variables from ReadInfo, and uses
     % the initial point from InfoInitialPoint to generate the map.
