@@ -1,4 +1,4 @@
-function Deformations = BetaDeformations(normalized_climate_vars, point, layer_num, layer_len, plotting, lower_bound, upper_bound)
+function Deformations = BetaDeformations(norm_climate_vars, point, layer_num, layer_len, plotting, lower_bound, upper_bound)
 % Deformations = BetaDeformations(normalized_climate_vars, point, layer_num, layer_len, plotting, lower_bound, upper_bound)
 % 
 % DESCRIPTION:
@@ -6,7 +6,7 @@ function Deformations = BetaDeformations(normalized_climate_vars, point, layer_n
 %   distributions.
 % 
 % REQUIRED INPUTS:
-%   normalized_climate_vars: A matrix of normalized layers, the rows are
+%   norm_climate_vars: A matrix of normalized layers, the rows are
 %                            the number of layers, and the columns are the 
 %                            map shaped as a vector.
 %   point: an array of [layer_num,1] of a chosen initial point.
@@ -52,7 +52,7 @@ function Deformations = BetaDeformations(normalized_climate_vars, point, layer_n
     % generated.
     new_point = point;
     for i = 1:layer_num
-        climate_vars(i,:) = betacdf(normalized_climate_vars(i,:),a(i),b(i));
+        climate_vars(i,:) = betacdf(norm_climate_vars(i,:),a(i),b(i));
         new_point(i) = betacdf(point(i),a(i),b(i));
     end
 
@@ -62,7 +62,7 @@ function Deformations = BetaDeformations(normalized_climate_vars, point, layer_n
         hold on
         for i = 1:layer_num
             climvar = climate_vars(i,:);
-            SortedNormalizedClimVar = sort(normalized_climate_vars, 2);
+            SortedNormalizedClimVar = sort(norm_climate_vars, 2);
             plot(SortedNormalizedClimVar(i,:), climvar)
         end
     end
