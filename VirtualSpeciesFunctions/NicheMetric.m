@@ -1,5 +1,5 @@
-function Metric = metrica(Maps, Dimensions, Method, Plotting)
-% metrica - Calculates a metric for a set of maps
+function Metric = NicheMetric(Maps, Dimensions, Method, Plotting)
+% Measures the performance of the Virtual Species method
 %
 % Inputs:
 %   maps - A 1-by-k array of map structs, where each struct has a field
