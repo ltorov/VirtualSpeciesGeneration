@@ -1,85 +1,79 @@
-function Metric = MapMetric(NicheMap, ModelMap, show, R)
+function Metric = MapMetric(niche_map, model_map, plotting, geo_ref)
 % Calculates a metric for the similarity between two maps, NicheMap and ModelMap
 % 
 % INPUTS:
-%   NicheMap: A matrix representing the true niche map
-%   ModelMap: A matrix representing the model's predicted niche map
-%   show: A flag for whether or not to display the resulting plot
-%   R: The geographic reference object of the map (optional)
+%   niche_map: A matrix representing the true niche map
+%   model_map: A matrix representing the model's predicted niche map
+%   plotting: A flag for whether or not to display the resulting plot
+%   geo_ref: The geographic reference object of the map (optional)
 % 
 % OUTPUTS:
 %   Metric: A numerical value representing the similarity between the two maps
 %
 % NOTES:
-% - NicheMap and ModelMap must have the same size and dimensions
-% - If R is not provided, the resulting plots will not have geographic information
+% - niche_map and model_map must have the same size and dimensions
+% - If geo_ref is not provided, the resulting plots will not have geographic information
 % - The Metric output is a vector that includes both the main metric value and a secondary 1-norm metric value
-% - If show is set to 1, a figure will be displayed showing the original and estimated maps, along with their corresponding
+% - If plotting is set to 1, a figure will be displayed showing the original and estimated maps, along with their corresponding
 %   plots of cumulative sum normalized by the maximum pixel value
 
     % Check if R is provided, otherwise initialize as empty
     if nargin < 4
-        R = [];
+        geo_ref = [];
     end
     
-    % Define NicheMap and ModelMap without NaN values
-    VectorNicheMap = NicheMap(:);
-    IdxNicheMap = ~isnan(VectorNicheMap);
-    VectorNicheMap = VectorNicheMap(IdxNicheMap);
-    
-    VectorModelMap = ModelMap(:);
-    VectorModelMap = VectorModelMap(IdxNicheMap);
-    
-    % Extract only the true niche map values (pixels where NicheMap and ModelMap are both non-zero)
-    combinedMap = VectorNicheMap + VectorModelMap;
-    absoluteIdx = combinedMap ~= 0;
-    VectorNicheMap = VectorNicheMap(absoluteIdx);
-    VectorModelMap = VectorModelMap(absoluteIdx);
-    
+    % Define niche_map and model_map without NaN values
+    niche_map_vector = niche_map(~isnan(niche_map));
+    model_map_vector = model_map(~isnan(niche_map));
+        
+    % Extract only the true niche map values (pixels where niche_map and model_map are both non-zero)
+    combined_map = niche_map_vector + model_map_vector;
+    absolute_idx = combined_map ~= 0;
+    niche_map_vector = niche_map_vector(absolute_idx);
+    model_map_vector = model_map_vector(absolute_idx);
+
     % Calculate main metric using 1-norm
-    metric2 = 1 - sum(abs(VectorNicheMap-VectorModelMap),'omitnan')/sum(absoluteIdx);
+    metric2 = 1 - sum(abs(niche_map_vector - model_map_vector),'omitnan')/sum(absolute_idx);
     
     % Sort the model map pixels according to the niche map values
-    [VectorNicheMap, IdxModelMap] = sort(VectorNicheMap, 'ascend');
-    VectorModelMap = VectorModelMap(IdxModelMap);
+    [niche_map_vector, model_map_idx] = sort(niche_map_vector, 'ascend');
+    model_map_vector = model_map_vector(model_map_idx);
     
     % Calculate cumulative sum normalized by the maximum pixel value for each sorted pixel
-    VectorModelMap = cumsum(VectorModelMap, 'omitnan');
-    VectorNicheMap = cumsum(VectorNicheMap, 'omitnan');
-    maxim = max(max(VectorNicheMap), max(VectorModelMap)); 
-    VectorNicheMap = VectorNicheMap/maxim;
-    VectorModelMap = VectorModelMap/maxim;
+    model_map_vector = cumsum(model_map_vector, 'omitnan');
+    niche_map_vector = cumsum(niche_map_vector, 'omitnan');
+    maxim = max(max(niche_map_vector), max(model_map_vector)); 
+    niche_map_vector = niche_map_vector/maxim;
+    model_map_vector = model_map_vector/maxim;
     
     % Calculate the difference map
-    DiffMap = abs(VectorNicheMap - VectorModelMap);
-    LengDiffMap = length(DiffMap);
-    LengDiffMap = linspace(0, 1, LengDiffMap);
+    diff_map = abs(niche_map_vector - model_map_vector);
+    diff_map_len = linspace(0, 1, length(diff_map));
     
     % Calculate the main metric using trapezoidal integration
-    Metric = 1 - trapz(LengDiffMap, DiffMap);
+    metric = 1 - trapz(diff_map_len, diff_map);
     
     % Display figures if show is set to 1
-    if show == 1   
+    if plotting == 1   
         % Plot niche and model maps
         figure
-        LengthNicheMap = length(VectorNicheMap);
-        LengthNicheMap = linspace(0, 1, LengthNicheMap); 
+        niche_map_len = linspace(0, 1, length(niche_map_vector)); 
         clf
-        plot(LengthNicheMap, VectorModelMap, 'LineWidth', 2)
+        plot(niche_map_len, model_map_vector, 'LineWidth', 2)
         hold on
-        plot(LengthNicheMap, VectorNicheMap, 'LineWidth', 2)
+        plot(niche_map_len, niche_map_vector, 'LineWidth', 2)
         legend('Estimated','Original','Location','best')
-        title(strcat(num2str(round(Metric*100,2)),'%'))
+        title(strcat(num2str(round(metric*100,2)),'%'))
 
         % Plot niche and model maps on a map
-        if ~isempty(R)
+        if ~isempty(geo_ref)
             figure
             subplot(1,2,1)
-            geoshow(NicheMap, R, 'DisplayType','surface');
+            geoshow(niche_map, geo_ref, 'DisplayType','surface');
             axis off
             title('Niche')
             subplot(1,2,2)
-            geoshow(ModelMap, R, 'DisplayType','surface');
+            geoshow(model_map, geo_ref, 'DisplayType','surface');
             contourcmap('jet', 0 : 0.05 : 1, 'colorbar', 'on', 'location', 'vertical')
             axis off
             title('Model')
@@ -87,6 +81,6 @@ function Metric = MapMetric(NicheMap, ModelMap, show, R)
     end
 
     % Append metric2 to Metric vector
-    Metric = [Metric, metric2];
+    Metric = [metric, metric2];
 
 end
