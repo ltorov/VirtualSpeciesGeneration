@@ -18,7 +18,7 @@ function InitialPoint = InitialPoint(layers, method, plotting, random_point, poi
 %   random_point: a boolean variable (true, false) indicating whether to use
 %                 a random initial point. Default is true.
 %   point: an array of [layer_num,1] of a chosen initial point.
-%   coeff: an array of [num_layer,1] of scalars [0,1] to warp the variable
+%   coeff: an array of [layer_num,1] of scalars [0,1] to warp the variable
 %          space. Default is a random array.
 %   deformations_limit: a scalar indicating the number of harmonics to use 
 %                       for generating deformations if 'harmonic' method is 
@@ -28,7 +28,7 @@ function InitialPoint = InitialPoint(layers, method, plotting, random_point, poi
 %   InitialPoint: a structure containing:
 %       -idx: an array of [1, Rows] containing the sorted indices of the layers
 %             based on their distance from the initial point.
-%       -SortNormDistance: an array of [1, Rows] containing the sorted
+%       -sorted_norm_distance: an array of [1, Rows] containing the sorted
 %             distances of the layers from the initial point. 
 
     % Start timer
