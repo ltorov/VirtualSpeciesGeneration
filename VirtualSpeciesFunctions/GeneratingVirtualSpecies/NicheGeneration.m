@@ -1,4 +1,7 @@
 function Map = NicheGeneration(Layers, InitialPoint, occupation, plotting)
+% Map = NicheGeneration(Layers, InitialPoint, occupation, plotting)
+% 
+% DESCRIPTION:
 % NicheGeneration generates a niche map for a virtual species based on
 % environmental variables.
 %
