@@ -104,7 +104,7 @@ function InitialPoint = InitialPoint(Layers, method, plotting, random_point, poi
             H = HarmonicDeformations(norm_climate_vars, layer_num, deformations_limit, plotting);
             
             % Calculate distance using harmonic distances
-            norm_distance = 1 - H.distances;
+            norm_distance = 1 - H.Distances;
 
         otherwise
             % Throw an error if method is not valid

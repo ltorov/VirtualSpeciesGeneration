@@ -51,7 +51,7 @@ samples = rand(sample_num, 2) * diag([1, 2 * pi]);
 
 % Generate harmonic functions for each point in the grid and calculate the distance from the center
 H = HarmonicFunction(samples, deformations_limit, plotting);
-distances = H.distances;
+distances = H.Distances;
 
 % Create a scattered interpolant object and use it to calculate the distance for each point with the given r and alpha values
 F = scatteredInterpolant(samples(:, 1), samples(:, 2), distances);
