@@ -8,7 +8,6 @@ Advisor: Daniel Rojas Díaz
 * [General Info](#general-information)
 * [Data](#data)
 * [Features](#features)
-* [Screenshots](#screenshots)
 * [Dependencies](#dependencies)
 * [Setup](#setup)
 * [Usage](#usage)
@@ -38,10 +37,6 @@ List the ready features here:
 - Beta Distributions Method
 - Harmonic Functions Method
 
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
 
 ## Dependencies
 
