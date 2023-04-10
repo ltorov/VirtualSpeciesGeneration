@@ -54,7 +54,7 @@ Matlab R2018b or higher
 
 To get started with this project, you can clone the repository using the following command:
 
-git clone https://github.com/ltorov/VirtualSpeciesGeneration.git
+`git clone https://github.com/ltorov/VirtualSpeciesGeneration.git`
 
 
 
