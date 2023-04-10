@@ -15,7 +15,6 @@ Advisor: Daniel Rojas Díaz
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
-* [Contact](#contact)
 <!-- * [License](#license) -->
 
 
@@ -48,7 +47,8 @@ List the ready features here:
 
 This project requires the following dependencies:
 
-Matlab R2018b or higher
+- MATLAB (version R2018a or higher)
+- .asc files containing the environmental variables in a given area
 
 ## Setup
 
@@ -56,42 +56,29 @@ To get started with this project, you can clone the repository using the followi
 
 `git clone https://github.com/ltorov/VirtualSpeciesGeneration.git`
 
+To use this code, open the main.mlx file in MATLAB and follow the instructions provided.
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
 
-`write-your-code-here`
 
 
 ## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+Project is: _in progress_.
 
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
 Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
+- Tuning hyperparameters.
 
 To do:
-- Feature to be added 1
-- Feature to be added 2
+- Further experimentation.
+- Compare against similar methods in the literature.
+- Use this to test the Frontier Depth method against MaxEnt and MaxLike.
 
 
 ## Acknowledgements
-Give credit here.
-- This project was inspired by...
 
-
-
-## Contact
-
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
+- This project was inspired by Daniel Rojas Diaz.
