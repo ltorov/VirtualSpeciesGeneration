@@ -7,6 +7,7 @@ Advisor: Daniel Rojas Díaz
 ## Table of Contents
 * [General Info](#general-information)
 * [Dependencies](#dependencies)
+* [Data](#data)
 * [Features](#features)
 * [Screenshots](#screenshots)
 * [Setup](#setup)
@@ -19,12 +20,6 @@ Advisor: Daniel Rojas Díaz
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
-
 This project aims to generate virtual species as a crucial complement to species distribution models (SDMs). SDMs often require validation with real-life species data, which can be challenging and biased. Virtual species are created by defining their niche as a function of environmental variables and simulating species occurrences on a given map. This project is written entirely in Matlab and aims to explore the variable space and generate variability in the simulated species to test the accuracy of SDMs.
 
 
@@ -34,12 +29,14 @@ This project requires the following dependencies:
 
 Matlab R2018b or higher
 
+## Data
+
 
 ## Features
 List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Coefficient Method
+- Beta Distributions Method
+- Harmonic Functions Method
 
 
 ## Screenshots
