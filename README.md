@@ -51,9 +51,11 @@ This project requires the following dependencies:
 Matlab R2018b or higher
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
+To get started with this project, you can clone the repository using the following command:
+
+git clone https://github.com/ltorov/VirtualSpeciesGeneration.git
+
 
 
 ## Usage
