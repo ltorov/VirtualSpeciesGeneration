@@ -31,6 +31,13 @@ Matlab R2018b or higher
 
 ## Data
 
+The environmental variables data in this project should be in .asc file format and contain the environmental variables in a given area. The data should be stored in the data folder in the following format:
+
+- Each environmental variable should be stored in a separate .asc file.
+- The .asc files should contain the values of the variable and the coordenates.
+- 
+An example of the environmental variables data files is available in the data folder.
+
 
 ## Features
 List the ready features here:
