@@ -6,10 +6,10 @@ Advisor: Daniel Rojas Díaz
 
 ## Table of Contents
 * [General Info](#general-information)
-* [Dependencies](#dependencies)
 * [Data](#data)
 * [Features](#features)
 * [Screenshots](#screenshots)
+* [Dependencies](#dependencies)
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
@@ -23,19 +23,13 @@ Advisor: Daniel Rojas Díaz
 This project aims to generate virtual species as a crucial complement to species distribution models (SDMs). SDMs often require validation with real-life species data, which can be challenging and biased. Virtual species are created by defining their niche as a function of environmental variables and simulating species occurrences on a given map. This project is written entirely in Matlab and aims to explore the variable space and generate variability in the simulated species to test the accuracy of SDMs.
 
 
-## Dependencies
-
-This project requires the following dependencies:
-
-Matlab R2018b or higher
-
 ## Data
 
 The environmental variables data in this project should be in .asc file format and contain the environmental variables in a given area. The data should be stored in the data folder in the following format:
 
 - Each environmental variable should be stored in a separate .asc file.
 - The .asc files should contain the values of the variable and the coordenates.
-- 
+
 An example of the environmental variables data files is available in the data folder.
 
 
@@ -50,6 +44,11 @@ List the ready features here:
 ![Example screenshot](./img/screenshot.png)
 <!-- If you have screenshots you'd like to share, include them here. -->
 
+## Dependencies
+
+This project requires the following dependencies:
+
+Matlab R2018b or higher
 
 ## Setup
 What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
