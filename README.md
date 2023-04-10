@@ -54,10 +54,6 @@ To get started with this project, you can clone the repository using the followi
 To use this code, open the main.mlx file in MATLAB and follow the instructions provided.
 
 
-## Usage
-
-
-
 ## Project Status
 Project is: _in progress_.
 
